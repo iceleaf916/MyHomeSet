@@ -9,7 +9,7 @@ iwconfig $WLAN_INTERFACE enc s:abcde [1]
 iwconfig $WLAN_INTERFACE enc open [1]
 
 # 设置名称
-iwconfig $WLAN_INTERFACE essid "Gentoo"
+iwconfig $WLAN_INTERFACE essid "my-laptop"
 
 ifconfig $WLAN_INTERFACE up
 
