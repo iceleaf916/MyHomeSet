@@ -1,0 +1,21 @@
+#!/bin/bash
+WLAN_INTERFACE=wlan0
+
+# 设置无线网卡的工作方式
+iwconfig $WLAN_INTERFACE mode ad-hoc
+
+# 设置密码
+iwconfig $WLAN_INTERFACE enc s:abcde [1]
+iwconfig $WLAN_INTERFACE enc open [1]
+
+# 设置名称
+iwconfig $WLAN_INTERFACE essid "Gentoo"
+
+ifconfig $WLAN_INTERFACE up
+
+# 设置无线网卡的IP地址，即ME525的网关。
+ifconfig $WLAN_INTERFACE 192.168.2.1
+
+# 设置NAT转发路由
+echo "1"  > /proc/sys/net/ipv4/ip_forward
+iptables -t nat -A POSTROUTING -o eth0 -s 192.168.2.1/24 -j MASQUERADE
