@@ -65,9 +65,6 @@ xterm*|rxvt*)
     ;;
 esac
 
-# my PS1
-PS1='\n\[\e[1;37m\][\[\e[1;36m\]\d \[\e[1;31m\]\T\[\e[1;37m\]] \[\e[1;37m\] [ \[\e[1;34m\]@ \[\e[1;32m\]\w \[\e[1;37m\]]\[\e[1;35m\] \[\e[0;37m\] \n>> '
-
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
@@ -104,3 +101,47 @@ fi
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
+
+##################
+# PS1 Start
+NO_COLOR="\[\033[0m\]"
+
+[[ -n "$SSH_TTY" ]] && IS_REMOTE="-(ssh)" || IS_REMOTE=""
+[[ -n "$REMOTEHOST" ]] && IS_REMOTE="${IS_REMOTE}-(rsh)"
+[[ -n "$STY" ]] && IS_SCREEN="-(screen)" || IS_SCREEN=""
+term_title() {
+    [[ -n $1 ]] && TERM_TITLE="$1" || TERM_TITLE=""
+}
+prompt_command() {
+    RETVAL=$1
+    local RED=$'\E[0;31m'
+    local BG_RED=$'\E[0;41m'
+    local LIGHTGREEN=$'\E[1;32m'
+    local BG_LIGHTGREEN=$'\E[1;42m'
+
+    ## parse term title
+    [[ -n "$TERM_TITLE" ]] \
+	&& _TERM_TITLE="$TERM_TITLE: ${PWD/$HOME/~}" \
+	|| _TERM_TITLE="${USER}@${HOSTNAME}: ${PWD/$HOME/~}"
+
+    ## parse git branch
+    IS_GIT_BRANCH=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/-(git:\1)/')
+
+    ## parse command line color
+    if [[ "$HOSTNAME" == `uname -n` ]]; then
+	[[ "$RETVAL" -eq 0 ]] && PS1_COLOR="${LIGHTGREEN}" || PS1_COLOR="${BG_LIGHTGREEN}"
+    else
+	[[ "$RETVAL" -eq 0 ]] && PS1_COLOR="${RED}" || PS1_COLOR="${BG_RED}"
+    fi
+
+    ## parse return value
+    [[ "$RETVAL" -ne 0 ]] \
+	&& IS_RETURN_VAL="-(\$?:$RETVAL)" \
+	|| IS_RETURN_VAL=""
+}
+PROMPT_COMMAND="prompt_command \$?"
+PS1="\033]0;\${_TERM_TITLE}\007\n\
+\[\${PS1_COLOR}\](\u)-(\h)${IS_REMOTE}${IS_SCREEN}-(\w)\${IS_GIT_BRANCH}\${IS_RETURN_VAL}${NO_COLOR}\n\
+\[\${PS1_COLOR}\](! \!)-> ${NO_COLOR}"
+## PS1 End
+##################
