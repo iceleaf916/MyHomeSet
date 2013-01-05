@@ -140,7 +140,7 @@ prompt_command() {
 	|| IS_RETURN_VAL=""
 }
 PROMPT_COMMAND="prompt_command \$?"
-PS1="\033]0;\${_TERM_TITLE}\007\n\
+PS1="\n\
 \[\${PS1_COLOR}\](\u)-(\h)${IS_REMOTE}${IS_SCREEN}-(\w)\${IS_GIT_BRANCH}\${IS_RETURN_VAL}${NO_COLOR}\n\
 \[\${PS1_COLOR}\](! \!)-> ${NO_COLOR}"
 ## PS1 End
