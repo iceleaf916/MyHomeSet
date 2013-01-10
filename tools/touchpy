@@ -1,0 +1,3 @@
+#!/bin/bash
+
+cp /home/iceleaf/Templates/template.py ./$1

@@ -145,3 +145,5 @@ PS1="\n\
 \[\${PS1_COLOR}\](! \!)-> ${NO_COLOR}"
 ## PS1 End
 ##################
+
+PATH=/home/iceleaf/MyHomeSet/tools:$PATH
