@@ -13,16 +13,16 @@ def chmod755(path):
     if os.path.isdir(path):
         try:
             os.chmod(path, 0755)
-            print "chmod 0755 %s: OK!" % path
         except Exception, e:
+            print "chmod 0755 %s: Fail!" % path
             print e
 
 def chmod644(path):
     if os.path.isfile(path):
         try:
             os.chmod(path, 0644)
-            print "chmod 0644 %s: OK!" % path
         except Exception, e:
+            print "chmod 0644 %s: Fail!" % path
             print e
 
 def walk(dir_path):
