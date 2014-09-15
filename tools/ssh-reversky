@@ -1,0 +1,2 @@
+#!/bin/bash
+ssh -CfNg -D 127.0.0.1:7070 reversky@103.251.90.142

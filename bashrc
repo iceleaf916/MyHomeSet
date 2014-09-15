@@ -148,4 +148,10 @@ PS1="\n\
 ## PS1 End
 ##################
 
-PATH=/home/iceleaf/MyHomeSet/tools:$PATH
+alias upapt='sudo aptitude update && sudo aptitude dist-upgrade'
+alias psearch='ps aux |grep'
+
+TERM=xterm-256color
+export GOPATH=/home/iceleaf/gocode:$GOPATH
+export PATH=/usr/lib/go/bin/:/home/iceleaf/gocode/bin:/usr/lib/x86_64-linux-gnu/qt5/bin:/home/iceleaf/MyHomeSet/tools:$PATH
+export EDITOR=vim
